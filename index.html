@@ -1,0 +1,592 @@
+```html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 디지털 교육혁신 대시보드</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fonts-archive/Paperlogy/subsets/Paperlogy-dynamic-subset.css" type="text/css"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: "Paperlogy", -apple-system, BlinkMacSystemFont, "Segoe UI",Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            background-color: #ffffff; /* White Background */
+            color: #1a1a1a; /* Dark text for contrast */
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 40vh;
+            width: 100%;
+            max-width: 800px;
+            max-height: 400px;
+        }
+        .kpi-card {
+            background-color: #f9f9f9; /* Light background for cards */
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 255, 255, 0.1), 0 2px 4px -2px rgba(0, 255, 255, 0.05); /* Cyan shadow */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #00ffff; /* Cyan border */
+        }
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 255, 255, 0.2), 0 4px 6px -4px rgba(0, 255, 255, 0.1);
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+            color: #1a1a1a; /* Dark text for navigation */
+        }
+        .nav-link.active, .nav-link:hover {
+            background-color: #00ffff; /* Cyan for active/hover */
+            color: #121212; /* Dark text on cyan */
+        }
+        .content-section {
+            scroll-margin-top: 80px;
+        }
+        .pill-button {
+            transition: all 0.2s ease-in-out;
+            background-color: #e0e0e0; /* Light grey for inactive button */
+            color: #1a1a1a;
+        }
+        .pill-button.active {
+            background-color: #00ffff; /* Cyan for active button */
+            color: #121212; /* Dark text on cyan */
+        }
+        .cultural-item {
+            cursor: pointer;
+            background-color: #f9f9f9;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(255, 0, 255, 0.1), 0 2px 4px -2px rgba(255, 0, 255, 0.05); /* Magenta shadow */
+            border: 1px solid #ff00ff; /* Magenta border */
+        }
+        .cultural-item:hover {
+            background-color: #ffe0ff; /* Slightly lighter magenta background */
+        }
+        .cultural-content-display {
+            background-color: #ffe0ff; /* Magenta toned background */
+            color: #1a1a1a; /* Dark text for content */
+            border-left: 5px solid #ff00ff; /* Magenta border */
+        }
+        .outlook-card {
+            background-color: #f9f9f9;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 255, 255, 0.1), 0 2px 4px -2px rgba(0, 255, 255, 0.05);
+            border: 1px solid #00ffff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="relative min-h-screen">
+        <div class="md:hidden flex justify-between items-center p-4 bg-[#ffffff]/80 backdrop-blur-sm sticky top-0 z-20 shadow-md">
+            <h1 class="text-xl font-bold text-[#1a1a1a]">AI 디지털 교육</h1>
+            <button id="mobile-menu-button" class="text-[#1a1a1a] focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+
+        <div id="sidebar" class="bg-[#f2f2f2] text-[#1a1a1a] w-64 space-y-2 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition duration-200 ease-in-out z-30 shadow-lg md:h-screen md:overflow-y-auto">
+            <a href="#" class="block px-4 py-2.5 text-2xl font-bold text-[#1a1a1a]">미래 교육 대시보드</a>
+            <nav id="main-nav">
+                <a href="#overview" class="nav-link block px-4 py-2.5 rounded-lg font-medium">개요</a>
+                <a href="#features" class="nav-link block px-4 py-2.5 rounded-lg font-medium">핵심 기능</a>
+                <a href="#teacher-support" class="nav-link block px-4 py-2.5 rounded-lg font-medium">교사 지원</a>
+                <a href="#student-growth" class="nav-link block px-4 py-2.5 rounded-lg font-medium">학생 성장</a>
+                <a href="#subject-apps" class="nav-link block px-4 py-2.5 rounded-lg font-medium">과목별 활용</a>
+                <a href="#ethics" class="nav-link block px-4 py-2.5 rounded-lg font-medium">교육 윤리 및 고려</a>
+                <a href="#conclusion" class="nav-link block px-4 py-2.5 rounded-lg font-medium">결론 및 전망</a>
+            </nav>
+        </div>
+
+        <main class="flex-1 p-4 sm:p-6 lg:p-10 text-[#1a1a1a] md:ml-64">
+            <section id="overview" class="content-section mb-16">
+                <h2 class="text-4xl font-bold mb-4 text-[#1a1a1a]">2025년 AI 디지털 교과서 도입 대비 미래 교육 준비</h2>
+                <p class="text-lg leading-relaxed">
+                    AI 디지털 교과서(AIDT)는 인공지능을 포함한 지능정보화 기술을 활용하여 다양한 학습 자료 및 지원 기능을 탑재한 IT 소프트웨어 교과서입니다. 전통적인 서책형 교과서의 한계를 극복하고 학생 맞춤형 학습을 지원하는 것을 목표로 하며, 2025년부터 초·중·고등학교에 단계적으로 도입될 예정입니다. 특히 2025년에는 초등학교 3, 4학년의 수학, 영어, 정보 과목에 우선 도입됩니다. 이는 학생 개별 학업 성취도에 따른 맞춤형 학습 제공을 통해 교육 격차를 줄이고, 디지털 친화적 역량을 강화하며, 교사와 학생 간의 소통을 강화하는 데 기여할 것으로 기대됩니다.
+                </p>
+            </section>
+
+            <section id="features" class="content-section mb-16">
+                <h2 class="text-3xl font-bold mb-6 text-[#1a1a1a]">✨ AI 디지털 교과서 핵심 기능</h2>
+                <p class="mb-8 text-md leading-relaxed">AI 디지털 교과서는 학생 맞춤형 학습과 교사의 효율적인 수업 운영을 돕는 다양한 특별한 기능을 제공합니다.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                    <div class="kpi-card text-center">
+                        <div class="text-6xl mb-4" style="color: #00ffff;">🧠</div>
+                        <h3 class="text-xl font-semibold text-[#1a1a1a]">학습 진단 및 추천</h3>
+                        <p class="text-sm text-[#1a1a1a]">AI가 학생의 학습을 자동으로 진단하고 수준에 맞는 맞춤형 교육 콘텐츠를 추천합니다.</p>
+                    </div>
+                    <div class="kpi-card text-center">
+                        <div class="text-6xl mb-4" style="color: #ff00ff;">🤝</div>
+                        <h3 class="text-xl font-semibold text-[#1a1a1a]">AI 보조 교사 & 튜터</h3>
+                        <p class="text-sm text-[#1a1a1a]">교사용 대시보드를 통해 학습 수준 분석 및 활동 추천을 제공하고, 학생에게는 챗봇을 통한 질문 답변을 지원합니다.</p>
+                    </div>
+                    <div class="kpi-card text-center">
+                        <div class="text-6xl mb-4" style="color: #00ffff;">📊</div>
+                        <h3 class="text-xl font-semibold text-[#1a1a1a]">통합 대시보드</h3>
+                        <p class="text-sm text-[#1a1a1a]">교사와 학생 모두 학습 현황, 성취도, 숙제 등을 한눈에 확인하고 관리할 수 있습니다.</p>
+                    </div>
+                    <div class="kpi-card text-center">
+                        <div class="text-6xl mb-4" style="color: #ff00ff;">✍️</div>
+                        <h3 class="text-xl font-semibold text-[#1a1a1a]">자동 숙제 출제 및 관리</h3>
+                        <p class="text-sm text-[#1a1a1a]">평가 결과 기반으로 AI가 부족한 부분을 파악하여 자동으로 맞춤형 숙제를 출제합니다.</p>
+                    </div>
+                    <div class="kpi-card text-center">
+                        <div class="text-6xl mb-4" style="color: #00ffff;">🏆</div>
+                        <h3 class="text-xl font-semibold text-[#1a1a1a]">학습 동기 부여</h3>
+                        <p class="text-sm text-[#1a1a1a]">칭찬 도장과 아바타/공간 꾸미기 등으로 학생들이 재미있게 학습에 참여하도록 유도합니다.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="teacher-support" class="content-section mb-16">
+                <h2 class="text-3xl font-bold mb-6 text-[#1a1a1a]">👩‍🏫 교사를 위한 AI 디지털 교과서 활용 지원</h2>
+                <p class="mb-8 text-md leading-relaxed">AI 디지털 교과서는 교사들의 수업 준비 및 학생 관리를 혁신적으로 지원하여, 교육 현장의 효율성을 높입니다.</p>
+                <div class="bg-[#f9f9f9] p-8 rounded-lg shadow-lg">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+                        <div>
+                            <h3 class="text-xl font-bold mb-2 text-[#1a1a1a]">수업 준비 시간 단축</h3>
+                            <ul class="list-disc list-inside space-y-1 text-[#1a1a1a]">
+                                <li>차시별 수업 콘텐츠로 간편하게 수업을 준비할 수 있습니다.</li>
+                                <li>AI가 반 수준에 맞는 맞춤형 콘텐츠를 추천해 줍니다.</li>
+                                <li>교사가 등록한 자료로도 수업을 디자인할 수 있습니다.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2 text-[#1a1a1a]">평가 및 관리 용이</h3>
+                            <ul class="list-disc list-inside space-y-1 text-[#1a1a1a]">
+                                <li>평가 후 자동 채점 및 학생 취약점 분석을 통해 개별 관리가 편리해집니다.</li>
+                                <li>학생들의 수업 참여도를 실시간으로 모니터링하여 효과적인 수업 운영이 가능합니다.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2 text-[#1a1a1a]">생활기록부 작성 지원</h3>
+                            <ul class="list-disc list-inside space-y-1 text-[#1a1a1a]">
+                                <li>AI가 학생 학습 현황을 종합 분석하여 교과 평어를 자동 생성합니다.</li>
+                                <li>교사는 AI가 생성한 내용을 수정하여 활용할 수 있습니다.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2 text-[#1a1a1a]">수업 진행 효율성</h3>
+                            <ul class="list-disc list-inside space-y-1 text-[#1a1a1a]">
+                                <li>수업에 필요한 학습 보조 도구들이 항상 학습 창에 준비되어 있습니다.</li>
+                                <li>AI 기반 모둠 구성으로 다양한 학업 성취도를 가진 학생들의 협력 활동을 지원합니다.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="student-growth" class="content-section mb-16">
+                <h2 class="text-3xl font-bold mb-6 text-[#1a1a1a]">🧑‍🎓 학생을 위한 AI 디지털 교과서 활용 지원</h2>
+                <p class="mb-8 text-md leading-relaxed">AI 디지털 교과서는 학생들이 스스로 학습 목표를 설정하고, 흥미를 느끼며 성장할 수 있도록 돕습니다.</p>
+                 <div class="bg-[#f9f9f9] p-8 rounded-lg shadow-lg">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+                        <div>
+                            <h3 class="text-xl font-bold mb-2 text-[#1a1a1a]">AI 튜터 기반 맞춤 학습</h3>
+                            <ul class="list-disc list-inside space-y-1 text-[#1a1a1a]">
+                                <li>AI 진단 평가를 통해 학생 수준에 맞는 맞춤형 교육을 제공합니다.</li>
+                                <li>수준별 맞춤 학습 콘텐츠를 반 전체 또는 개별 학생에게 추가 제공할 수 있습니다.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2 text-[#1a1a1a]">체험 기반 개념 이해</h3>
+                            <ul class="list-disc list-inside space-y-1 text-[#1a1a1a]">
+                                <li>한 번의 체험으로 복잡한 개념을 빠르게 이해할 수 있도록 돕습니다.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2 text-[#1a1a1a]">흥미로운 학습 경험</h3>
+                            <ul class="list-disc list-inside space-y-1 text-[#1a1a1a]">
+                                <li>다양한 게임 활동, 흥미로운 콘텐츠, AI 보조 도구로 학습 집중도를 높입니다.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2 text-[#1a1a1a]">협력적 학습 지원</h3>
+                            <ul class="list-disc list-inside space-y-1 text-[#1a1a1a]">
+                                <li>모둠 활동을 통해 공동체 역량과 협력적 소통 역량을 함양합니다.</li>
+                            </ul>
+                        </div>
+                         <div>
+                            <h3 class="text-xl font-bold mb-2 text-[#1a1a1a]">자기 주도 학습</h3>
+                            <ul class="list-disc list-inside space-y-1 text-[#1a1a1a]">
+                                <li>집중 학습 모드와 노트 기능으로 학생들이 스스로 학습 과정을 관리하고 확인할 수 있습니다.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="subject-apps" class="content-section mb-16">
+                <h2 class="text-3xl font-bold mb-6 text-[#1a1a1a]">📚 과목별 AI 디지털 교과서 활용 모델</h2>
+                <p class="mb-8 text-md leading-relaxed">초등 수학, 영어, 정보 교과에서 AI 디지털 교과서가 어떻게 활용될 수 있는지 구체적인 사례를 통해 알아봅니다.</p>
+                <div class="flex justify-center mb-6">
+                    <div class="bg-[#e0e0e0] p-1 rounded-full flex space-x-1">
+                        <button class="pill-button active px-4 py-2 rounded-full text-sm font-semibold" data-subject="math">수학</button>
+                        <button class="pill-button px-4 py-2 rounded-full text-sm font-semibold" data-subject="english">영어</button>
+                        <button class="pill-button px-4 py-2 rounded-full text-sm font-semibold" data-subject="info">정보</button>
+                    </div>
+                </div>
+                <div id="subject-content-container">
+                    <div id="subject-math" class="subject-content grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="kpi-card">
+                            <h3 class="text-xl font-bold mb-2 text-[#1a1a1a]">YBM 수학: 교구 중심 활용</h3>
+                            <p class="text-sm text-[#1a1a1a]">디지털 교구를 활용하여 학생들의 능동적 수업 참여를 유도합니다. 컴퍼스, 삼각자, 각도기 등 다양한 디지털 교구가 제공됩니다. 빠른 피드백을 통해 교사는 학생들의 이해도를 신속하게 파악할 수 있습니다.</p>
+                            <p class="text-sm text-[#1a1a1a] mt-2"><strong>활용 예시:</strong> 디지털 컴퍼스로 원 그리기 활동을 통해 지름과의 관계를 학습하고, 그리기 문제는 대시보드에서 채점합니다.</p>
+                        </div>
+                        <div class="kpi-card">
+                            <h3 class="text-xl font-bold mb-2 text-[#1a1a1a]">천재 수학: 지식 맵 분석</h3>
+                            <p class="text-sm text-[#1a1a1a]">AI가 학생의 강점과 약점 토픽을 분석하여 지식 맵으로 시각화합니다. 교과 콘텐츠와 연계된 직접 그리기 및 움직여보는 활동으로 수학 이해도를 높이고, 다양한 디지털 수학 교구로 흥미로운 학습을 제공합니다.</p>
+                        </div>
+                    </div>
+                    <div id="subject-english" class="subject-content hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="kpi-card">
+                            <h3 class="text-xl font-bold mb-2 text-[#1a1a1a]">YBM 영어: 활동 중심 수업</h3>
+                            <p class="text-sm text-[#1a1a1a]">AI 디지털 교과서에 탑재된 다양한 게임 활동 콘텐츠로 흥미를 유발하고 참여도를 높입니다. '함께 풀기'로 학생들의 생각 공유를 유도하고, '모둠 활동'을 통해 공동체 및 협력적 소통 역량을 함양합니다.</p>
+                            <p class="text-sm text-[#1a1a1a] mt-2"><strong>개별 학습 활동:</strong> '단어 이름표 붙이기', '듣고 소리 내어 읽기', '말하기 활동' 등으로 단어 및 문장 표현 능력을 향상시킵니다.</p>
+                        </div>
+                        <div class="kpi-card">
+                            <h3 class="text-xl font-bold mb-2 text-[#1a1a1a]">천재 영어: AI 기반 평가/첨삭</h3>
+                            <p class="text-sm text-[#1a1a1a]"><strong>매츠 톡(Mat's Talk):</strong> AI 음성 평가 기술로 바른 분석 결과를 즉시 제공하여 언제 어디서든 영어 말하기 연습이 가능합니다.</p>
+                            <p class="text-sm text-[#1a1a1a] mt-2"><strong>내추라 이스(NaturaEASE):</strong> AI 첨삭 기능을 활용한 글쓰기 연습으로 영어 표현 능력 향상에 도움을 줍니다.</p>
+                        </div>
+                    </div>
+                    <div id="subject-info" class="subject-content hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="kpi-card">
+                            <h3 class="text-xl font-bold mb-2 text-[#1a1a1a]">천재 정보: 컴퓨팅 시스템 실습</h3>
+                            <ul class="list-disc list-inside space-y-1 text-[#1a1a1a]">
+                                <li>별도 설치 없이 마이크로비트를 활용한 컴퓨팅 시스템 실습이 가능합니다.</li>
+                                <li>웹 환경에서 오렌지3를 활용한 데이터 시각화 실습을 진행할 수 있습니다.</li>
+                                <li>파이썬 등 다양한 프로그래밍 언어를 활용한 실습을 지원합니다.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ethics" class="content-section mb-16">
+                 <h2 class="text-3xl font-bold mb-6 text-[#1a1a1a]">⚖️ AI 교육 윤리 및 고려 사항</h2>
+                <p class="mb-8 text-md leading-relaxed">AI 디지털 교과서 도입과 함께 고려해야 할 중요한 윤리적 문제와 교육적 과제들이 있습니다.</p>
+                <div class="bg-[#f9f9f9] p-8 rounded-lg shadow-lg">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+                        <div>
+                            <h3 class="text-xl font-bold mb-2 text-[#1a1a1a]">디지털 기기 의존 우려</h3>
+                            <p class="text-sm text-[#1a1a1a]">디지털 기기 의존 증가와 학습 효과성에 대한 우려가 제기되고 있으며, 문해력 저하로 이어질 수 있다는 경고도 있습니다.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2 text-[#1a1a1a]">AI 윤리 교육의 필요성</h3>
+                            <p class="text-sm text-[#1a1a1a]">딥페이크 범죄와 같은 문제로 인해 AI 윤리 교육과 디지털 리터러시 교육 강화의 중요성이 강조됩니다. 사람에 대한 존중과 성숙한 젠더 교육 등 도덕적 기준을 먼저 가르쳐야 한다는 의견도 있습니다.</p>
+                        </div>
+                        <div class="md:col-span-2">
+                            <h3 class="text-xl font-bold mb-2 text-[#1a1a1a]">천재교육의 노력</h3>
+                            <p class="text-sm text-[#1a1a1a]">천재교육은 AI 교육 윤리 문제에 대한 인식을 바탕으로, AI 인터넷 윤리 교육을 교과서 교육에 포함하고 교사들의 올바른 디지털 기기 활용을 위한 리터러시 연수 필요성을 강조합니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="conclusion" class="content-section">
+                <h2 class="text-3xl font-bold mb-6 text-[#1a1a1a]">🚀 결론 및 기대 효과</h2>
+                <p class="mb-8 text-md leading-relaxed">AI 디지털 교과서는 미래 교육의 중요한 도구로서, 교육 현장에 혁신적인 변화를 가져올 것입니다.</p>
+                <div class="space-y-4">
+                    <div class="outlook-card cursor-pointer">
+                        <h3 class="text-xl font-bold text-[#1a1a1a]">AI 기반 에듀테크 혁신</h3>
+                        <div class="outlook-content hidden mt-4 text-[#1a1a1a]">
+                             <ul class="list-disc list-inside space-y-1">
+                                <li>AI 기반 에듀테크 혁신을 통해 교육의 질 향상과 맞춤형 학습 경험을 제공합니다.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="outlook-card cursor-pointer">
+                        <h3 class="text-xl font-bold text-[#1a1a1a]">학습자 중심 교육 실현</h3>
+                         <div class="outlook-content hidden mt-4 text-[#1a1a1a]">
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>교사에게는 효율적인 수업 준비 및 학생 관리 지원을, 학생에게는 개별 맞춤형 학습과 동기 부여를 제공합니다.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="outlook-card cursor-pointer">
+                        <h3 class="text-xl font-bold text-[#1a1a1a]">미래 교육 발전</h3>
+                        <div class="outlook-content hidden mt-4 text-[#1a1a1a]">
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>AI 기술 발전에 따른 교육 윤리 및 정신 건강 문제와 같은 새로운 과제에 대한 지속적인 관심과 개선 노력을 통해 미래 교육 발전에 중요한 역할을 할 것입니다.</li>
+                                <li>AI 디지털 교과서 기능을 활용하여 쉽고 편리한 수업 진행이 가능합니다.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const chartColors = {
+        cyan: 'rgba(0, 255, 255, 0.6)',
+        cyanBorder: 'rgba(0, 255, 255, 1)',
+        magenta: 'rgba(255, 0, 255, 0.6)',
+        magentaBorder: 'rgba(255, 0, 255, 1)',
+        blue: 'rgba(54, 162, 235, 0.6)',
+        blueBorder: 'rgba(54, 162, 235, 1)',
+        yellow: 'rgba(255, 206, 86, 0.6)',
+        yellowBorder: 'rgba(255, 206, 86, 1)',
+        grey: 'rgba(201, 203, 207, 0.6)',
+        greyBorder: 'rgba(201, 203, 207, 1)',
+    };
+    
+    // Chart.js global defaults
+    Chart.defaults.color = '#1a1a1a'; // Default text color for charts (dark for white background)
+    Chart.defaults.borderColor = '#ccc'; // Default border color for chart elements
+
+    // Album Exports Chart (Re-purposed for AIDT 도입 일정)
+    const albumExportsCtx = document.getElementById('albumExportsChart');
+    if(albumExportsCtx) {
+        new Chart(albumExportsCtx, {
+            type: 'bar', // Changed to bar chart for distinct years
+            data: {
+                labels: ['2025 (초3/4 수학, 영어, 정보)', '2026 (국어, 사회, 과학)', '2028 (모든 학년 확대)'],
+                datasets: [{
+                    label: 'AI 디지털 교과서 도입 계획',
+                    data: [100, 75, 50], // Representing progression
+                    backgroundColor: [chartColors.cyan, chartColors.magenta, chartColors.blue],
+                    borderColor: [chartColors.cyanBorder, chartColors.magentaBorder, chartColors.blueBorder],
+                    borderWidth: 1,
+                    borderRadius: 5,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                if (value === 100) return '초등 주요과목';
+                                if (value === 75) return '확대 과목';
+                                if (value === 50) return '전 학년';
+                                return '';
+                            },
+                             color: '#1a1a1a' // Y-axis tick color
+                        },
+                         grid: {
+                            color: 'rgba(0, 0, 0, 0.1)' // Grid line color (lighter for white background)
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: '#1a1a1a' // X-axis tick color
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)' // Grid line color (lighter for white background)
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+                    tooltip: {
+                         callbacks: {
+                            label: function(context) {
+                                return context.label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Revenue Source Chart (Re-purposed for AIDT 기대 효과)
+    const revenueSourceCtx = document.getElementById('revenueSourceChart');
+    if(revenueSourceCtx){
+        new Chart(revenueSourceCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['교육 격차 감소 (40%)', '학습 데이터 분석 (35%)', '디지털 역량 강화 (25%)'],
+                datasets: [{
+                    label: 'AI 디지털 교과서 기대 효과',
+                    data: [40, 35, 25], 
+                    backgroundColor: [
+                        chartColors.cyan,
+                        chartColors.magenta,
+                        chartColors.blue,
+                    ],
+                    borderColor: [
+                        chartColors.cyanBorder,
+                        chartColors.magentaBorder,
+                        chartColors.blueBorder,
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#1a1a1a' // Legend text color
+                        }
+                    },
+                    tooltip: {
+                         callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (context.parsed !== null) {
+                                     label += ': ' + context.parsed + '%';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Fandom Demographics Chart (Re-purposed for 학생별 학습 진행률)
+    const fandomDemographicsCtx = document.getElementById('fandomDemographicsChart');
+    if(fandomDemographicsCtx) {
+        new Chart(fandomDemographicsCtx, {
+            type: 'pie',
+            data: {
+                labels: ['진행 완료 (70%)', '진행 중 (20%)', '시작 전 (10%)'],
+                datasets: [{
+                    label: '학생별 학습 진행률',
+                    data: [70, 20, 10], 
+                    backgroundColor: [
+                        chartColors.cyan,
+                        chartColors.magenta,
+                        chartColors.grey
+                    ],
+                    borderColor: [
+                        chartColors.cyanBorder,
+                        chartColors.magentaBorder,
+                        chartColors.greyBorder
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#1a1a1a' // Legend text color
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: (context) => `${context.label}`
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Cultural Impact Section Interactivity (Re-purposed for AI 보조 교사/튜터)
+    const culturalItems = document.querySelectorAll('.cultural-item');
+    const culturalContentDisplay = document.getElementById('cultural-content-display');
+    const culturalText = document.getElementById('cultural-text');
+    const culturalContents = {
+        'teacher-ai': "교사를 위한 AI 보조 교사 기능은 학생들의 평가 결과를 한눈에 보여주고 그 결과를 분석하여 알맞은 활동을 추천해 줍니다. 우리 반 학습 수준과 맞춤 학습 현황을 한눈에 확인할 수 있습니다.",
+        'student-ai': "학생을 위한 AI 튜터 기능은 학생이 스스로 학습 목표를 세울 수 있게 돕고 모르는 단어나 문장의 뜻을 알려 줍니다. AI 챗봇을 통해 언제 어디서나 궁금한 점을 질문하면 교과서 기반의 답변을 받을 수 있습니다.",
+        'dashboard-overview': "교사 대시보드는 학습 현황과 성취도를 확인하고 데이터를 기반으로 학생 맞춤형 숙제를 발송할 수 있도록 돕습니다. 단원별 평가 현황, 행동 분석, 차시별 성취도 현황 확인이 가능하며 모든 숙제를 한눈에 확인할 수 있습니다. 학생 마이페이지에서는 숙제와 자신의 학습 상황을 확인할 수 있습니다."
+    };
+
+    culturalItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const contentKey = item.dataset.content;
+            culturalText.textContent = culturalContents[contentKey];
+            culturalContentDisplay.classList.remove('hidden');
+        });
+    });
+
+    // Subject Section Interactivity
+    const subjectButtons = document.querySelectorAll('.pill-button');
+    const subjectContents = document.querySelectorAll('.subject-content');
+
+    subjectButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            subjectButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            const subjectToShow = button.dataset.subject;
+            
+            subjectContents.forEach(content => {
+                if (content.id === `subject-${subjectToShow}`) {
+                    content.classList.remove('hidden');
+                } else {
+                    content.classList.add('hidden');
+                }
+            });
+        });
+    });
+    
+    // Outlook Section Accordion (Re-purposed for Conclusion)
+    const outlookCards = document.querySelectorAll('.outlook-card');
+    outlookCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const content = card.querySelector('.outlook-content');
+            content.classList.toggle('hidden');
+        });
+    });
+    
+    // Smooth scrolling & active nav link
+    const navLinks = document.querySelectorAll('#main-nav a');
+    const sections = document.querySelectorAll('.content-section');
+
+    function changeNav() {
+        let index = sections.length;
+        while(--index && window.scrollY + 100 < sections[index].offsetTop) {}
+        
+        navLinks.forEach((link) => link.classList.remove('active'));
+        if(index >= 0 && navLinks[index]) {
+            navLinks[index].classList.add('active');
+        }
+    }
+    
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+            if(targetSection){
+                 window.scrollTo({
+                    top: targetSection.offsetTop - 70,
+                    behavior: 'smooth'
+                });
+            }
+             if(window.innerWidth < 768) {
+                document.getElementById('sidebar').classList.add('-translate-x-full');
+            }
+        });
+    });
+
+    window.addEventListener('scroll', changeNav);
+    changeNav();
+    
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const sidebar = document.getElementById('sidebar');
+    if(mobileMenuButton){
+        mobileMenuButton.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+        });
+    }
+
+});
+</script>
+</body>
+</html>
+```
